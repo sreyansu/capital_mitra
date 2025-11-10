@@ -6,6 +6,7 @@
     "city": "Mumbai",
     "phone": "+91-9876543210",
     "email": "rajesh.kumar@email.com",
+    "pan": "ABCDE1234F",
     "credit_score": 785,
     "pre_approved_limit": 800000,
     "monthly_income": 150000,
@@ -22,6 +23,7 @@
     "city": "Bangalore",
     "phone": "+91-9998877766",
     "email": "priya.sharma@email.com",
+    "pan": "PQRSX1234Z",
     "credit_score": 820,
     "pre_approved_limit": 1000000,
     "monthly_income": 180000,
@@ -36,6 +38,7 @@
     "city": "Delhi",
     "phone": "+91-9123456789",
     "email": "ankit.verma@email.com",
+    "pan": "LMNOP2345Q",
     "credit_score": 650,
     "pre_approved_limit": 500000,
     "monthly_income": 90000,
@@ -43,6 +46,54 @@
     "company": "Verma Traders",
     "existing_loans": [
       { "type": "auto_loan", "outstanding": 400000, "emi": 8000 }
+    ]
+  },
+  {
+    "customer_id": "CUST004",
+    "name": "Neha Patel",
+    "age": 31,
+    "city": "Ahmedabad",
+    "phone": "+91-9812233445",
+    "email": "neha.patel@email.com",
+    "pan": "GHJKL3456P",
+    "credit_score": 760,
+    "pre_approved_limit": 600000,
+    "monthly_income": 110000,
+    "employment_type": "Salaried",
+    "company": "HDFC Bank",
+    "existing_loans": []
+  },
+  {
+    "customer_id": "CUST005",
+    "name": "Arjun Mehta",
+    "age": 39,
+    "city": "Pune",
+    "phone": "+91-9090909090",
+    "email": "arjun.mehta@email.com",
+    "pan": "ZYXWV5678T",
+    "credit_score": 710,
+    "pre_approved_limit": 700000,
+    "monthly_income": 130000,
+    "employment_type": "Self-Employed",
+    "company": "Mehta Engineering",
+    "existing_loans": [
+      { "type": "business_loan", "outstanding": 300000, "emi": 10000 }
+    ]
+  },
+  {
+    "customer_id": "CUST006",
+    "name": "Sreyansu Sekhar Mohanty",
+    "age": 21,
+    "city": "Bhadrak",
+    "phone": "+91-9861634516",
+    "email": "sreyansu90@gmail.com",
+    "pan": "ZYXWV5784R",
+    "credit_score": 700,
+    "pre_approved_limit": 800000,
+    "monthly_income": 230000,
+    "employment_type": "Self-Employed",
+    "company": "UBS",
+    "existing_loans": [
     ]
   }
 ]

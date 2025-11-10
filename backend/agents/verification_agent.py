@@ -1,20 +1,19 @@
-# backend/agents/verification_agent.py
-
 import json
-import os
+from pathlib import Path
+
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
 class VerificationAgent:
     def __init__(self):
-        data_path = os.path.join(os.path.dirname(__file__), "../data/crm_data.json")
-        with open(data_path, "r") as f:
+        with open(DATA_DIR / "crm_data.json", "r", encoding="utf-8") as f:
             self.crm_data = json.load(f)
 
-    def verify_customer(self, customer):
+    def verify_customer(self, customer: dict) -> bool:
         print(f"✅ VerificationAgent: Verifying KYC for {customer['name']}")
-        for record in self.crm_data:
-            if record["customer_id"] == customer["customer_id"]:
-                if record["verified"]:
-                    print("KYC verified successfully.")
-                    return True
+        cid = customer.get("customer_id")
+        for rec in self.crm_data:
+            if rec.get("customer_id") == cid and rec.get("verified") is True:
+                print("KYC verified successfully.")
+                return True
         print("❌ Verification failed.")
         return False

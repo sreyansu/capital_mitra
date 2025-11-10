@@ -161,6 +161,16 @@ function App() {
 
       <div className="flex-1 flex overflow-hidden">
         <div className="flex-1 flex flex-col max-w-5xl mx-auto w-full">
+
+          <div className="flex justify-end items-center mb-4">
+            <button
+              onClick={handleStartNew}
+              className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-xl shadow transition-all"
+              title="Start a new chat"
+            >
+              New Chat
+            </button>
+          </div>
           <ChatWindow messages={messages} isLoading={isLoading} />
 
           <div className="border-t border-gray-800 bg-black px-4 py-4">

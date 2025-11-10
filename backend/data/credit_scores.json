@@ -2,6 +2,7 @@
   { "customer_id": "CUST001", "credit_score": 785 },
   { "customer_id": "CUST002", "credit_score": 820 },
   { "customer_id": "CUST003", "credit_score": 650 },
-  { "customer_id": "CUST004", "credit_score": 720 },
-  { "customer_id": "CUST005", "credit_score": 680 }
+  { "customer_id": "CUST004", "credit_score": 760 },
+  { "customer_id": "CUST005", "credit_score": 710 },
+  { "customer_id": "CUST006", "credit_score": 700 }
 ]

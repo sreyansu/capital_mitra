@@ -1,26 +1,50 @@
 [
   {
-    "offer_id": "OFF001",
-    "customer_id": "CUST001",
-    "loan_type": "Personal Loan",
-    "max_amount": 800000,
+    "offer_id": "OFFER001",
+    "title": "Personal Loan - Salaried Professionals",
+    "description": "Get up to ₹10 Lakhs instantly with 10.5% interest for salaried employees.",
     "interest_rate": 10.5,
-    "valid_till": "2025-12-31"
+    "tenure_months": 36,
+    "eligibility": "Credit score above 700, stable employment."
   },
   {
-    "offer_id": "OFF002",
-    "customer_id": "CUST002",
-    "loan_type": "Personal Loan",
-    "max_amount": 1000000,
-    "interest_rate": 9.8,
-    "valid_till": "2025-12-31"
+    "offer_id": "OFFER002",
+    "title": "Business Expansion Loan",
+    "description": "Loans up to ₹15 Lakhs for small business owners with flexible EMI options.",
+    "interest_rate": 11.75,
+    "tenure_months": 48,
+    "eligibility": "For self-employed customers with credit score above 680."
   },
   {
-    "offer_id": "OFF003",
-    "customer_id": "CUST003",
-    "loan_type": "Personal Loan",
-    "max_amount": 500000,
-    "interest_rate": 11.2,
-    "valid_till": "2025-12-31"
+    "offer_id": "OFFER003",
+    "title": "Top-Up Loan for Existing Customers",
+    "description": "Exclusive offer to increase your loan limit by up to 30% with easy processing.",
+    "interest_rate": 10.0,
+    "tenure_months": 24,
+    "eligibility": "Existing verified customers only."
+  },
+  {
+    "offer_id": "OFFER004",
+    "title": "Home Renovation Loan",
+    "description": "Finance your home improvements at attractive rates starting from 9.9%.",
+    "interest_rate": 9.9,
+    "tenure_months": 60,
+    "eligibility": "Minimum credit score 720."
+  },
+  {
+    "offer_id": "OFFER005",
+    "title": "Festival Offer - Instant Personal Loan",
+    "description": "Limited time festive offer: Instant approval up to ₹5 Lakhs, minimal documentation.",
+    "interest_rate": 9.5,
+    "tenure_months": 18,
+    "eligibility": "For verified customers with income above ₹50,000/month."
+  },
+  {
+    "offer_id": "OFFER006",
+    "title": "Festival Offer - Instant Personal Loan",
+    "description": "Limited time festive offer: Instant approval up to ₹5 Lakhs, minimal documentation.",
+    "interest_rate": 9.5,
+    "tenure_months": 18,
+    "eligibility": "For verified customers with income above ₹50,000/month."
   }
 ]
