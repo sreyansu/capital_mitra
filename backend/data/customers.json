@@ -1,0 +1,48 @@
+[
+  {
+    "customer_id": "CUST001",
+    "name": "Rajesh Kumar",
+    "age": 35,
+    "city": "Mumbai",
+    "phone": "+91-9876543210",
+    "email": "rajesh.kumar@email.com",
+    "credit_score": 785,
+    "pre_approved_limit": 800000,
+    "monthly_income": 150000,
+    "employment_type": "Salaried",
+    "company": "TCS",
+    "existing_loans": [
+      { "type": "home_loan", "outstanding": 2500000, "emi": 25000 }
+    ]
+  },
+  {
+    "customer_id": "CUST002",
+    "name": "Priya Sharma",
+    "age": 28,
+    "city": "Bangalore",
+    "phone": "+91-9998877766",
+    "email": "priya.sharma@email.com",
+    "credit_score": 820,
+    "pre_approved_limit": 1000000,
+    "monthly_income": 180000,
+    "employment_type": "Salaried",
+    "company": "Infosys",
+    "existing_loans": []
+  },
+  {
+    "customer_id": "CUST003",
+    "name": "Ankit Verma",
+    "age": 42,
+    "city": "Delhi",
+    "phone": "+91-9123456789",
+    "email": "ankit.verma@email.com",
+    "credit_score": 650,
+    "pre_approved_limit": 500000,
+    "monthly_income": 90000,
+    "employment_type": "Self-Employed",
+    "company": "Verma Traders",
+    "existing_loans": [
+      { "type": "auto_loan", "outstanding": 400000, "emi": 8000 }
+    ]
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "customer_id": "CUST001",
+    "phone": "+91-9876543210",
+    "address": "A-304, Andheri West, Mumbai",
+    "verified": true
+  },
+  {
+    "customer_id": "CUST002",
+    "phone": "+91-9998877766",
+    "address": "12 MG Road, Bangalore",
+    "verified": true
+  },
+  {
+    "customer_id": "CUST003",
+    "phone": "+91-9123456789",
+    "address": "Sector 21, Dwarka, Delhi",
+    "verified": false
+  }
+]

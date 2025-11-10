@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { BASE_URL } from './config';
 import Navbar from './components/Navbar';
 import ChatWindow from './components/ChatWindow';
 import FileUpload from './components/FileUpload';
@@ -75,49 +77,18 @@ function App() {
     setMessages((prev) => [...prev, newMessage]);
   };
 
-  const simulateBotResponse = async (userMessage: string) => {
+  const getBotResponseFromBackend = async (userMessage: string) => {
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    const lowerMessage = userMessage.toLowerCase();
-
-    if (currentStage === 1) {
-      if (lowerMessage.includes('loan') || lowerMessage.includes('need') || lowerMessage.includes('want')) {
-        setCurrentStage(2);
-        addBotMessage("Great! I'd be happy to help you with a personal loan. May I know the purpose of your loan?");
+    try {
+      const res = await axios.post(`${BASE_URL}/chat/`, { message: userMessage });
+      if (res.data && res.data.message) {
+        addBotMessage(res.data.message);
       } else {
-        addBotMessage("I can help you with personal loans. Could you tell me more about your loan requirements?");
+        addBotMessage("Sorry, I couldn't understand your request.");
       }
-    } else if (currentStage === 2) {
-      if (lowerMessage.includes('wedding') || lowerMessage.includes('business') || lowerMessage.includes('education') || lowerMessage.includes('home')) {
-        addBotMessage(`Perfect! Based on your requirements, you're pre-approved for up to ₹8,00,000 at 10.5% interest rate for up to 60 months. Would you like to proceed with this offer?`);
-      } else {
-        addBotMessage("Could you please specify the purpose? For example: wedding, business, education, or home renovation.");
-      }
-    } else if (currentStage === 2 && (lowerMessage.includes('yes') || lowerMessage.includes('proceed') || lowerMessage.includes('sure'))) {
-      setCurrentStage(3);
-      addBotMessage("Excellent! Now, let's verify your identity. I've sent a 6-digit OTP to your registered mobile number. Please enter it here.");
-    } else if (currentStage === 3) {
-      if (/^\d{6}$/.test(userMessage.trim())) {
-        setCurrentStage(4);
-        addBotMessage("OTP verified successfully! ✓\n\nNow I'm checking your credit score and evaluating your application. This will take just a moment...");
-
-        setTimeout(() => {
-          addBotMessage("Great news! Your credit score is 785 — that's excellent!\n\nTo complete the underwriting process, I'll need your latest salary slip. Please upload it using the attachment button below.");
-          setShowFileUpload(true);
-        }, 3000);
-      } else {
-        addBotMessage("Please enter a valid 6-digit OTP.");
-      }
-    } else if (currentStage === 5) {
-      addBotMessage("Your loan has been approved and the sanction letter is being generated. You'll be redirected shortly...");
-      setTimeout(() => {
-        setViewState('sanction');
-      }, 2000);
-    } else {
-      addBotMessage("I'm here to help. Please follow the prompts to complete your loan application.");
+    } catch (error) {
+      addBotMessage("Error connecting to backend. Please try again later.");
     }
-
     setIsLoading(false);
   };
 
@@ -128,7 +99,7 @@ function App() {
     setInputValue('');
     addUserMessage(userMessage);
 
-    await simulateBotResponse(userMessage);
+    await getBotResponseFromBackend(userMessage);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {

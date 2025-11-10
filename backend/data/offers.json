@@ -1,0 +1,26 @@
+[
+  {
+    "offer_id": "OFF001",
+    "customer_id": "CUST001",
+    "loan_type": "Personal Loan",
+    "max_amount": 800000,
+    "interest_rate": 10.5,
+    "valid_till": "2025-12-31"
+  },
+  {
+    "offer_id": "OFF002",
+    "customer_id": "CUST002",
+    "loan_type": "Personal Loan",
+    "max_amount": 1000000,
+    "interest_rate": 9.8,
+    "valid_till": "2025-12-31"
+  },
+  {
+    "offer_id": "OFF003",
+    "customer_id": "CUST003",
+    "loan_type": "Personal Loan",
+    "max_amount": 500000,
+    "interest_rate": 11.2,
+    "valid_till": "2025-12-31"
+  }
+]

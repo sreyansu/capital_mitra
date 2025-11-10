@@ -1,0 +1,19 @@
+# --- Core Framework ---
+fastapi==0.115.0
+uvicorn==0.30.6
+
+# --- PDF Generation ---
+fpdf==1.7.2
+
+# --- File Handling ---
+python-multipart==0.0.9
+
+# --- Data Handling ---
+pydantic==2.6.4
+pydantic-core==2.16.3
+
+# --- CORS Middleware ---
+starlette==0.38.2
+
+# --- Utilities ---
+aiofiles==24.1.0
