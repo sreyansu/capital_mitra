@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { BASE_URL } from './config';
-import Navbar from './components/Navbar';
-import ChatWindow from './components/ChatWindow';
-import FileUpload from './components/FileUpload';
-import ProgressBar from './components/ProgressBar';
-import SanctionView from './components/SanctionView';
-import LandingPage from './components/LandingPage';
-import { Paperclip, Send } from 'lucide-react';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { BASE_URL } from "./config";
+import Navbar from "./components/Navbar";
+import ChatWindow from "./components/ChatWindow";
+import FileUpload from "./components/FileUpload";
+import ProgressBar from "./components/ProgressBar";
+import SanctionView from "./components/SanctionView";
+import LandingPage from "./components/LandingPage";
+import { Paperclip, Send } from "lucide-react";
+
+import { toast, Toaster } from "react-hot-toast"; // add for user notifications
 
 interface Message {
   id: string;
@@ -20,164 +22,218 @@ interface LoanDetails {
   amount: string;
   interestRate: string;
   tenure: string;
+  sanctionLetterUrl?: string;
 }
 
-type ViewState = 'landing' | 'chat' | 'sanction';
+type ViewState = "landing" | "chat" | "sanction";
 
-function App() {
+export default function App() {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showFileUpload, setShowFileUpload] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [currentStage, setCurrentStage] = useState(1);
-  const [viewState, setViewState] = useState<ViewState>('landing');
+  const [viewState, setViewState] = useState<ViewState>("landing");
   const [loanDetails, setLoanDetails] = useState<LoanDetails>({
-    amount: '₹5,00,000',
-    interestRate: '10.5%',
-    tenure: '36 months',
+    amount: "",
+    interestRate: "",
+    tenure: "",
   });
 
+  // --- Load previous chat ---
   useEffect(() => {
-    if (viewState === 'chat') {
-      const savedMessages = localStorage.getItem('capitalmitra_chat');
-      if (savedMessages) {
-        setMessages(JSON.parse(savedMessages));
+    if (viewState === "chat") {
+      const saved = localStorage.getItem("capitalmitra_chat");
+      if (saved) {
+        setMessages(JSON.parse(saved));
       } else {
         addBotMessage(
-          "Hello! I'm CapitalMitra, your personal loan assistant. I'll guide you through the entire loan process from inquiry to sanction. How can I help you today?"
+          "👋 Hi! I’m CapitalMitra, your personal AI loan assistant. I’ll help you apply, verify, and get your loan sanctioned — step by step. How can I help you today?"
         );
       }
     }
   }, [viewState]);
 
+  // --- Persist chat state ---
   useEffect(() => {
-    if (messages.length > 0) {
-      localStorage.setItem('capitalmitra_chat', JSON.stringify(messages));
-    }
+    if (messages.length > 0)
+      localStorage.setItem("capitalmitra_chat", JSON.stringify(messages));
   }, [messages]);
 
+  // ========================
+  // 📤 MESSAGE HELPERS
+  // ========================
   const addBotMessage = (text: string) => {
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      text,
-      isBot: true,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    };
-    setMessages((prev) => [...prev, newMessage]);
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Date.now().toString(),
+        text,
+        isBot: true,
+        timestamp: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      },
+    ]);
   };
 
   const addUserMessage = (text: string) => {
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      text,
-      isBot: false,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    };
-    setMessages((prev) => [...prev, newMessage]);
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Date.now().toString(),
+        text,
+        isBot: false,
+        timestamp: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      },
+    ]);
   };
 
-  const getBotResponseFromBackend = async (userMessage: string) => {
+  // ========================
+  // 🤖 GET BACKEND RESPONSE
+  // ========================
+  const getBotResponse = async (userMessage: string) => {
     setIsLoading(true);
     try {
       const res = await axios.post(`${BASE_URL}/chat/`, { message: userMessage });
-      if (res.data && res.data.message) {
-        addBotMessage(res.data.message);
-      } else {
-        addBotMessage("Sorry, I couldn't understand your request.");
+      const data = res.data;
+
+      if (data?.message) addBotMessage(data.message);
+
+      // ✅ Dynamic: If backend returns sanction info, go to Sanction View
+      if (data?.approved || data?.sanction_letter) {
+        setTimeout(() => {
+          setLoanDetails({
+            amount: `₹${data.approved?.approved_amount?.toLocaleString() || "—"}`,
+            interestRate: `${data.approved?.rate || 0}%`,
+            tenure: `${data.approved?.tenure || 0} months`,
+            sanctionLetterUrl: data.sanction_letter ? `${BASE_URL}${data.sanction_letter}` : "#",
+          });
+          setViewState("sanction");
+        }, 2000);
       }
-    } catch (error) {
-      addBotMessage("Error connecting to backend. Please try again later.");
+
+      // Optional: handle structured AI advice
+      if (data?.advisor) {
+        addBotMessage(
+          data.advisor.summary_lines.join("\n• ")
+        );
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("⚠️ Unable to connect to CapitalMitra backend. Please retry.");
+      addBotMessage("Sorry, I couldn’t reach the backend. Please try again later.");
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
-  const handleSendMessage = async () => {
-    if (inputValue.trim() === '') return;
-
-    const userMessage = inputValue;
-    setInputValue('');
-    addUserMessage(userMessage);
-
-    await getBotResponseFromBackend(userMessage);
+  // ========================
+  // ✉️ SEND MESSAGE
+  // ========================
+  const handleSend = async () => {
+    if (!inputValue.trim() || isLoading) return;
+    const msg = inputValue.trim();
+    setInputValue("");
+    addUserMessage(msg);
+    await getBotResponse(msg);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSendMessage();
+      handleSend();
     }
   };
 
+  // ========================
+  // 📎 FILE UPLOAD
+  // ========================
   const handleFileUpload = async (file: File) => {
     setIsUploading(true);
-
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
+    await new Promise((res) => setTimeout(res, 2000)); // simulate verification
     setIsUploading(false);
     setShowFileUpload(false);
+
     addUserMessage(`[Uploaded: ${file.name}]`);
+    addBotMessage("📁 Your document has been received and verified successfully.");
 
-    setTimeout(() => {
-      setCurrentStage(5);
-      addBotMessage("Thank you! Your salary slip has been received and verified.\n\nAll checks complete! ✓\n\nYour loan of ₹5,00,000 at 10.5% interest for 36 months has been APPROVED! 🎉\n\nGenerating your sanction letter now...");
-
-      setTimeout(() => {
-        setViewState('sanction');
-      }, 3000);
-    }, 1500);
+    // Move to next logical stage
+    setCurrentStage(5);
+    addBotMessage("✅ All checks complete! Your loan is being finalized...");
+    setTimeout(() => setViewState("sanction"), 2500);
   };
 
+  // ========================
+  // 🔄 NEW SESSION
+  // ========================
   const handleStartNew = () => {
     setMessages([]);
+    setLoanDetails({ amount: "", interestRate: "", tenure: "" });
     setCurrentStage(1);
-    setViewState('landing');
-    localStorage.removeItem('capitalmitra_chat');
+    setViewState("landing");
+    localStorage.removeItem("capitalmitra_chat");
   };
 
-  const handleGetStarted = () => {
-    setViewState('chat');
-  };
-
-  if (viewState === 'landing') {
-    return <LandingPage onGetStarted={handleGetStarted} />;
-  }
-
-  if (viewState === 'sanction') {
+  // ========================
+  // 🌐 VIEW SWITCHES
+  // ========================
+  if (viewState === "landing") {
     return (
-      <SanctionView
-        loanAmount={loanDetails.amount}
-        interestRate={loanDetails.interestRate}
-        tenure={loanDetails.tenure}
-        sanctionLetterUrl="#"
-        onStartNew={handleStartNew}
-      />
+      <>
+        <LandingPage onGetStarted={() => setViewState("chat")} />
+        <Toaster position="bottom-center" />
+      </>
     );
   }
 
+  if (viewState === "sanction") {
+    return (
+      <>
+        <SanctionView
+          loanAmount={loanDetails.amount}
+          interestRate={loanDetails.interestRate}
+          tenure={loanDetails.tenure}
+          sanctionLetterUrl={loanDetails.sanctionLetterUrl}
+          onStartNew={handleStartNew}
+        />
+        <Toaster position="bottom-center" />
+      </>
+    );
+  }
+
+  // ========================
+  // 💬 CHAT SCREEN
+  // ========================
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-white via-orange-50 to-white">
       <Navbar />
 
-      <div className="flex-1 flex overflow-hidden">
-        <div className="flex-1 flex flex-col max-w-5xl mx-auto w-full">
-
-          <div className="flex justify-end items-center mb-4">
+      <div className="flex flex-1 overflow-hidden">
+        <div className="flex flex-col flex-1 max-w-5xl mx-auto w-full">
+          {/* New Chat Button */}
+          <div className="flex justify-end px-6 py-3">
             <button
               onClick={handleStartNew}
               className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-xl shadow transition-all"
-              title="Start a new chat"
             >
               New Chat
             </button>
           </div>
+
           <ChatWindow messages={messages} isLoading={isLoading} />
 
-          <div className="border-t border-gray-800 bg-black px-4 py-4">
+          {/* Chat Input */}
+          <div className="border-t border-gray-200 bg-white/90 backdrop-blur-md px-4 py-4 sticky bottom-0">
             <div className="flex items-center space-x-3 max-w-4xl mx-auto">
               <button
                 onClick={() => setShowFileUpload(true)}
-                className="p-3 text-gray-400 hover:text-orange-500 hover:bg-gray-800 rounded-lg transition-all"
+                className="p-3 text-gray-400 hover:text-orange-500 hover:bg-orange-100 rounded-lg transition-all"
                 title="Upload document"
               >
                 <Paperclip size={22} />
@@ -189,13 +245,13 @@ function App() {
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Type your message..."
-                className="flex-1 bg-gray-800 text-white px-6 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder-gray-500"
+                className="flex-1 bg-gray-100 text-gray-900 px-6 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder-gray-400"
               />
 
               <button
-                onClick={handleSendMessage}
-                disabled={inputValue.trim() === '' || isLoading}
-                className="bg-orange-600 hover:bg-orange-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white p-3 rounded-xl transition-all shadow-lg hover:shadow-xl"
+                onClick={handleSend}
+                disabled={inputValue.trim() === "" || isLoading}
+                className="bg-orange-600 hover:bg-orange-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white p-3 rounded-xl transition-all shadow-lg hover:shadow-xl"
               >
                 <Send size={22} />
               </button>
@@ -203,7 +259,8 @@ function App() {
           </div>
         </div>
 
-        <div className="hidden lg:block w-80 border-l border-gray-800 bg-black p-6 overflow-y-auto">
+        {/* Right Progress Bar */}
+        <div className="hidden lg:block w-80 border-l border-gray-200 bg-white/80 backdrop-blur-md p-6 overflow-y-auto">
           <ProgressBar currentStage={currentStage} />
         </div>
       </div>
@@ -215,8 +272,8 @@ function App() {
           isUploading={isUploading}
         />
       )}
+
+      <Toaster position="bottom-center" />
     </div>
   );
 }
-
-export default App;

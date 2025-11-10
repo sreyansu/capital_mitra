@@ -14,8 +14,8 @@ const stages = [
 
 export default function ProgressBar({ currentStage }: ProgressBarProps) {
   return (
-    <div className="bg-gray-900 rounded-xl p-6 shadow-lg">
-      <h3 className="text-white font-semibold mb-6 text-center">Loan Progress</h3>
+    <div className="bg-white rounded-xl p-6 shadow-md">
+      <h3 className="text-gray-900 font-semibold mb-6 text-center">Loan Progress</h3>
       <div className="space-y-4">
         {stages.map((stage, index) => {
           const isCompleted = currentStage > stage.id;

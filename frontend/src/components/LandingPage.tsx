@@ -6,18 +6,16 @@ interface LandingPageProps {
 
 export default function LandingPage({ onGetStarted }: LandingPageProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
-      <nav className="border-b border-gray-800 px-6 py-4 sticky top-0 z-40 bg-black bg-opacity-80 backdrop-blur">
+    <div className="min-h-screen bg-gradient-to-br from-white via-orange-50 to-white text-gray-900">
+      <nav className="border-b border-gray-200 px-6 py-4 sticky top-0 z-40 bg-white bg-opacity-90 backdrop-blur shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">CM</span>
-            </div>
-            <h1 className="text-xl font-semibold">CapitalMitra</h1>
+            <img src="/logo.png" alt="Capital Mitra Logo" className="w-14 h-14 rounded-lg bg-white p-1" />
+            <h1 className="text-xl font-semibold text-gray-900">CapitalMitra</h1>
           </div>
           <button
             onClick={onGetStarted}
-            className="bg-orange-600 hover:bg-orange-700 px-6 py-2 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl"
+            className="button-gradient px-6 py-2 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl"
           >
             Get Started
           </button>
@@ -31,9 +29,9 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               <div>
                 <h2 className="text-5xl md:text-6xl font-bold leading-tight mb-4">
                   Your Personal Loan,
-                  <span className="text-orange-600"> In Minutes</span>
+                  <span style={{background: 'linear-gradient(90deg, #0073E6, #00B8A9)', WebkitBackgroundClip: 'text', color: 'transparent', WebkitTextFillColor: 'transparent'}}> In Minutes</span>
                 </h2>
-                <p className="text-xl text-gray-400">
+                <p className="text-xl text-secondary">
                   From inquiry to sanction letter through an intelligent AI conversation. Fast, transparent, and hassle-free.
                 </p>
               </div>
@@ -41,10 +39,10 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   onClick={onGetStarted}
-                  className="bg-orange-600 hover:bg-orange-700 px-8 py-4 rounded-xl font-semibold text-lg transition-all shadow-lg hover:shadow-2xl flex items-center justify-center space-x-2"
+                  className="button-gradient px-8 py-4 rounded-xl font-semibold text-lg transition-all shadow-lg hover:shadow-2xl flex items-center justify-center space-x-2"
                 >
                   <span>Start Your Journey</span>
-                  <ArrowRight size={20} />
+                  <ArrowRight size={20} color="#fff" />
                 </button>
                 <button className="border border-gray-600 hover:border-orange-600 px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:bg-gray-800">
                   Learn More
@@ -98,7 +96,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
           </div>
         </section>
 
-        <section className="bg-gray-800 bg-opacity-50 border-y border-gray-700 py-16 md:py-20">
+        <section className="bg-main border-y border-[#E5E7EB] py-16 md:py-20">
           <div className="max-w-7xl mx-auto px-6">
             <h3 className="text-3xl font-bold mb-12 text-center">How It Works</h3>
             <div className="grid md:grid-cols-4 gap-8">
@@ -127,16 +125,16 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
                 const Icon = step.icon;
                 return (
                   <div key={index} className="relative">
-                    <div className="bg-gray-900 rounded-xl p-6 text-center">
-                      <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-600 bg-opacity-20 rounded-full mb-4">
-                        <Icon size={32} className="text-orange-600" />
+                    <div className="bg-card rounded-xl p-6 text-center shadow">
+                      <div className="inline-flex items-center justify-center w-16 h-16 bg-[#E6F4FF] rounded-full mb-4">
+                        <Icon size={32} className="text-[#0073E6]" />
                       </div>
                       <h4 className="text-xl font-semibold mb-2">{step.title}</h4>
                       <p className="text-gray-400 text-sm">{step.description}</p>
                     </div>
                     {index < 3 && (
                       <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2">
-                        <ArrowRight size={24} className="text-orange-600" />
+                        <ArrowRight size={24} className="text-[#0073E6]" />
                       </div>
                     )}
                   </div>
@@ -183,25 +181,25 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
             ].map((feature, index) => {
               const Icon = feature.icon;
               return (
-                <div key={index} className="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-700 hover:border-orange-600 transition-all hover:shadow-lg">
-                  <Icon size={32} className="text-orange-600 mb-4" />
+                <div key={index} className="bg-card rounded-xl p-6 border border-[#E5E7EB] hover:border-[#00B8A9] transition-all hover:shadow-lg">
+                  <Icon size={32} className="text-[#0073E6] mb-4" />
                   <h4 className="text-lg font-semibold mb-2">{feature.title}</h4>
-                  <p className="text-gray-400 text-sm">{feature.description}</p>
+                  <p className="text-secondary text-sm">{feature.description}</p>
                 </div>
               );
             })}
           </div>
         </section>
 
-        <section className="bg-gradient-to-r from-orange-600 to-orange-700 py-16 md:py-20">
+        <section className="py-16 md:py-20" style={{background: 'linear-gradient(90deg, #0073E6, #00B8A9)'}}>
           <div className="max-w-4xl mx-auto px-6 text-center">
-            <h3 className="text-4xl font-bold mb-6">Ready to Get Your Loan?</h3>
-            <p className="text-xl mb-8 text-orange-50">
+            <h3 className="text-4xl font-bold mb-6 text-white">Ready to Get Your Loan?</h3>
+            <p className="text-xl mb-8 text-white">
               Join thousands of satisfied customers who got their loans approved in minutes.
             </p>
             <button
               onClick={onGetStarted}
-              className="bg-white text-orange-600 hover:bg-gray-100 px-8 py-4 rounded-xl font-semibold text-lg transition-all shadow-lg hover:shadow-xl"
+              className="button-gradient px-8 py-4 rounded-xl font-semibold text-lg transition-all shadow-lg hover:shadow-xl"
             >
               Start Your Application Now
             </button>

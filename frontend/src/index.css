@@ -7,8 +7,41 @@
 @layer base {
   body {
     font-family: 'Inter', sans-serif;
+    background: #F9FAFB;
+    color: #1A1A1A;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    color: #1A1A1A;
+  }
+  .text-secondary {
+    color: #444444;
+  }
+  a, .link, .icon-link {
+    color: #0073E6;
   }
 }
+
+.button-gradient {
+  background: linear-gradient(90deg, #0073E6, #00B8A9);
+  color: #fff;
+  border: none;
+}
+.button-gradient:hover {
+  background: linear-gradient(90deg, #0060C7, #00A094);
+}
+
+.navbar-bg {
+  background: #0A1A2F;
+  color: #fff;
+}
+
+.bg-main {
+  background: #F9FAFB;
+}
+.bg-card {
+  background: #FFFFFF;
+}
+
 
 @layer utilities {
   .scrollbar-thin::-webkit-scrollbar {
@@ -16,7 +49,7 @@
   }
 
   .scrollbar-thin::-webkit-scrollbar-track {
-    background: #111111;
+    background: #e5e7eb;
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb {

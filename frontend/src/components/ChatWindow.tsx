@@ -22,11 +22,11 @@ export default function ChatWindow({ messages, isLoading }: ChatWindowProps) {
   }, [messages, isLoading]);
 
   return (
-    <div className="flex-1 overflow-y-auto px-4 py-6 space-y-2 scrollbar-thin scrollbar-thumb-orange-600 scrollbar-track-gray-900">
+    <div className="flex-1 overflow-y-auto px-6 py-8 space-y-2 bg-white scrollbar-thin scrollbar-thumb-orange-300 scrollbar-track-gray-100 rounded-xl">
       {messages.length === 0 && (
         <div className="flex items-center justify-center h-full">
           <div className="text-center text-gray-400">
-            <p className="text-lg">Welcome to CapitalMitra</p>
+            <p className="text-lg font-medium">Welcome to CapitalMitra</p>
             <p className="text-sm mt-2">Your AI-powered personal loan assistant</p>
           </div>
         </div>
